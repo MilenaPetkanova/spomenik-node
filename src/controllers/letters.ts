@@ -3,7 +3,7 @@ import db from '../models'
 
 export const getLetters = async (req: Request, res: Response): Promise<Response> => {
 	try {
-        const letters = await db.Letter.findAll({
+    const letters = await db.Letter.findAll({
 			order: [
 				['id', 'DESC']
 			],
