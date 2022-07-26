@@ -4,9 +4,14 @@ import {LetterInterface} from '../interfaces/letter'
 module.exports = (sequelize: any, DataTypes: any) => {
   class Letter extends Model<LetterInterface> implements LetterInterface {
     content!: string;
+    date!: string;
   }
   Letter.init({
     content: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    date: {
       type: DataTypes.STRING,
       allowNull: false
     },
