@@ -2,7 +2,7 @@ require('dotenv').config();
  
 const env = process.env.NODE_ENV || 'development'; 
 
-const config = {
+const config: any = {
   "development": {
     "user": process.env.DB_DEV_USER,
     "password": process.env.DB_DEV_PASSWORD,
@@ -27,5 +27,4 @@ const config = {
   },
 }
 
-module.exports = config[env];
-
+export default config[env];
