@@ -1,9 +1,9 @@
 import {Request, Response} from 'express'
-import db from '../models'
+import {Letter} from '../models'
 
 export const getLetters = async (req: Request, res: Response): Promise<Response> => {
 	try {
-    const letters = await db.Letter.findAll({
+    const letters = await Letter.findAll({
 			order: [
 				['id', 'DESC']
 			],
@@ -17,7 +17,7 @@ export const getLetters = async (req: Request, res: Response): Promise<Response>
 
 export const createLetter = async (req: Request, res: Response): Promise<Response> => {
 	try {
-		const letter = await db.Letter.create(req.body);
+		const letter = await Letter.create(req.body);
 		return res.status(201).send({
 			message: `Letter with id ${letter.id} was created successfully`,
 			letter: letter.toJSON(),
@@ -34,7 +34,7 @@ export const createLetter = async (req: Request, res: Response): Promise<Respons
 export const updateLetter = async (req: Request, res: Response): Promise<Response> => {
 	try {
 		const id = parseInt(req.params.id);
-		const letter = await db.Letter.findByPk(id);
+		const letter = await Letter.findByPk(id);
 		if(!letter) {
 			return res.status(404).send({
 				message: `There is no letter with id ${id}`,
@@ -58,7 +58,7 @@ export const updateLetter = async (req: Request, res: Response): Promise<Respons
 export const getLetterById = async (req: Request, res: Response): Promise<Response> => {
 	try {
 		const id = parseInt(req.params.id);
-		const letter = await db.Letter.findByPk(id);
+		const letter = await Letter.findByPk(id);
 		if(!letter) {
 			return res.status(404).send({
 				message: `There is no letter with id ${id}`,
@@ -76,7 +76,7 @@ export const getLetterById = async (req: Request, res: Response): Promise<Respon
 export const deleteLetter = async (req: Request, res: Response): Promise<Response> => {
 	try {
 		const id = parseInt(req.params.id);
-		const letter = await db.Letter.findByPk(id);
+		const letter = await Letter.findByPk(id);
 		if(!letter) {
 			return res.status(404).send({
 				message: `There is no letter with id ${id}`,

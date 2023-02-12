@@ -1,29 +1,30 @@
 import sequelizeConnection from '../db/connection'
 import { DataTypes, Model } from 'sequelize'
-import { LetterInterface } from '../interfaces/letter'
+import { AccountInterface } from '../interfaces/account'
 
-class Letter extends Model<LetterInterface> implements LetterInterface {
+class Account extends Model<AccountInterface> implements AccountInterface {
   id!: number;
-  content!: string;
-  date!: string;
+  name!: string;
+  private!: boolean;
 }
-Letter.init({
+
+Account.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  content: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  date: {
-    type: DataTypes.STRING,
+  private: {
+    type: DataTypes.BOOLEAN,
     allowNull: false
   },
 }, {
   sequelize: sequelizeConnection,
-  modelName: 'Letter',
+  modelName: 'Account',
 });
 
-export default Letter
+export default Account

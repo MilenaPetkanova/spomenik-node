@@ -1,7 +1,8 @@
 import {Request, Response, NextFunction} from 'express'
 import Joi from 'joi'
 import jwt from 'jsonwebtoken'
-import config from '../config/config'
+import config from '../db/config'
+require('dotenv').config();
 
 export const validateUser = async (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
