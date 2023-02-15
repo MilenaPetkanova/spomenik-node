@@ -8,12 +8,12 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cors())
-app.use(routes)
+app.use('/api/v1', routes)
 
 try {
     db.sequelize.sync().then(() => {
         app.listen(config.serverPort, () => {
-            console.log(`server running on port ${config.serverPort}`)
+            console.log(`Welcome to the spomenik API! Endpoints available at ${config.serverUrl}/${config.serverPort}/api/v1`)
         })
     })   
 } catch (error: any) {

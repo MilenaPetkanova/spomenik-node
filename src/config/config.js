@@ -10,6 +10,7 @@ const config = {
     "dialect": process.env.DB_DEV_DIALECT,
     "host": process.env.DB_DEV_HOST,
     "port": process.env.DB_DEV_PORT,
+    "serverUrl": process.env.DB_DEV_URL,
     "serverPort": process.env.SERVER_DEV_PORT,
     "jwtAccessSecret": process.env.JWT_ACCESS_TOKEN_SECRET || '',
     "jwtRefreshSecret": process.env.JWT_REFRESH_TOKEN_SECRET || ''
@@ -21,6 +22,7 @@ const config = {
     "dialect": process.env.DB_PROD_DIALECT,
     "host": process.env.DB_PROD_HOST,
     "port": process.env.DB_PROD_PORT,
+    "serverUrl": process.env.DB_PROD_URL,
     "serverPort": process.env.SERVER_PROD_PORT,
     "jwtAccessSecret": process.env.JWT_ACCESS_TOKEN_SECRET || '',
     "jwtRefreshSecret": process.env.JWT_REFRESH_TOKEN_SECRET || ''
