@@ -1,9 +1,9 @@
 import {Request, Response} from 'express'
-import {Image} from '../models'
+import db from '../models'
 
 export const getImages = async (req: Request, res: Response): Promise<Response> => {
 	try {
-    const images = await Image.findAll({
+        const images = await db.Image.findAll({
 			order: [
 				['id', 'DESC']
 			],
@@ -17,7 +17,7 @@ export const getImages = async (req: Request, res: Response): Promise<Response> 
 
 export const createImage = async (req: Request, res: Response): Promise<Response> => {
 	try {
-		const image = await Image.create(req.body);
+		const image = await db.Image.create(req.body);
 		return res.status(201).send({
 			message: `Image with id ${image.id} was created successfully`,
 			image: image.toJSON(),
@@ -34,7 +34,7 @@ export const createImage = async (req: Request, res: Response): Promise<Response
 export const updateImage = async (req: Request, res: Response): Promise<Response> => {
 	try {
 		const id = parseInt(req.params.id);
-		const image = await Image.findByPk(id);
+		const image = await db.Image.findByPk(id);
 		if(!image) {
 			return res.status(404).send({
 				message: `There is no image with id ${id}`,
@@ -58,7 +58,7 @@ export const updateImage = async (req: Request, res: Response): Promise<Response
 export const getImageById = async (req: Request, res: Response): Promise<Response> => {
 	try {
 		const id = parseInt(req.params.id);
-		const image = await Image.findByPk(id);
+		const image = await db.Image.findByPk(id);
 		if(!image) {
 			return res.status(404).send({
 				message: `There is no image with id ${id}`,
@@ -76,7 +76,7 @@ export const getImageById = async (req: Request, res: Response): Promise<Respons
 export const deleteImage = async (req: Request, res: Response): Promise<Response> => {
 	try {
 		const id = parseInt(req.params.id);
-		const image = await Image.findByPk(id);
+		const image = await db.Image.findByPk(id);
 		if(!image) {
 			return res.status(404).send({
 				message: `There is no image with id ${id}`,

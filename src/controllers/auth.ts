@@ -1,9 +1,7 @@
 import {Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
-import config from '../db/config'
-import {User} from '../models'
-
-console.log('config :>> ', config);
+import config from '../config/config'
+import db from '../models'
 
 function generateJwtAccessToken(user: object) {
 	const ONE_WEEK = 60 * 60 * 24 * 7
@@ -21,7 +19,7 @@ function generateJwtRefreshToken(user: object) {
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
 	try {
-		const user = await User.create(req.body)
+		const user = await db.User.create(req.body)
 		const userJson = user.toJSON();
 		return res.send({
 			user: userJson,
@@ -45,7 +43,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 export const login = async (req: Request, res: Response,): Promise<Response> => {
 	try {
 		const {email, password} = req.body
-		const user = await User.findOne({
+		const user = await db.User.findOne({
 			where: {
 				email: email
 			}
@@ -72,7 +70,6 @@ export const login = async (req: Request, res: Response,): Promise<Response> => 
 			}
 		})
 	} catch(error) {
-		console.error(error);
 		return res.status(500).send({
 			error: 'An error has occured while trying to log in'
 		});
@@ -81,7 +78,7 @@ export const login = async (req: Request, res: Response,): Promise<Response> => 
 
 export const refresh = async (req: Request, res: Response): Promise<Response> => {
 	try {
-		const user = await User.create(req.body)
+		const user = await db.User.create(req.body)
 		const userJson = user.toJSON();
 		return res.send({
 			user: userJson,
