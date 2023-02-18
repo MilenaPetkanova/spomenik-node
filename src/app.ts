@@ -13,7 +13,7 @@ app.use('/api/v1', routes)
 try {
     db.sequelize.sync().then(() => {
         app.listen(config.serverPort, () => {
-            console.log(`Welcome to the spomenik API! Endpoints available at ${config.serverUrl}/${config.serverPort}/api/v1`)
+            console.log(`Welcome to the spomenik API! Endpoints available at ${config.serverUrl}:${config.serverPort}/api/v1`)
         })
     })   
 } catch (error: any) {
