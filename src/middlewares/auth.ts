@@ -1,7 +1,61 @@
 import {Request, Response, NextFunction} from 'express'
 import Joi from 'joi'
 import jwt from 'jsonwebtoken'
+import passport from 'passport';
+import {Strategy as LocalStrategy} from 'passport-local';
+import {ExtractJwt} from 'passport-jwt';
+import {Strategy as JWTstrategy} from 'passport-jwt';
 import config from '../config/config'
+import db from '../models'
+
+const localStrategyOpts = {
+  usernameField: 'email',
+  passwordField: 'password',
+};
+
+const jwtStrategyOpts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: config.jwtAccessSecret
+};
+
+passport.use(new LocalStrategy(localStrategyOpts, async (email, password, done) => {
+  try {
+    const user = await db.User.findOne({ where: { email: email } });
+    if(!user) {
+      return done(null, false, { message: 'Incorrect email or password.' });
+    }
+
+    const isPasswordValid = await user.comparePassword(password)
+    if(!isPasswordValid) {
+      return done(null, false, { message: 'Incorrect email or password.' });
+    }
+
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+}));
+
+passport.use(new JWTstrategy(jwtStrategyOpts, async (jwt_payload, done) => {
+  try {
+    const user = await db.User.findOne({ where: { email: jwt_payload.email } });
+    if(!user) {
+      return done(null, false);
+    }
+
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+}));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user: any, done) {
+  done(null, user);
+});
 
 export const validateUser = async (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
@@ -38,22 +92,5 @@ export const validateUser = async (req: Request, res: Response, next: NextFuncti
           error: 'Invalid registration information'
         })    
     }
-  }
-}
-
-export const authenticateJWT = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-
-  if (authHeader) {
-      const token = authHeader.split(' ')[1];
-      jwt.verify(token, config?.jwtAccessSecret, (err: any, user: any) => {
-          if (err) {
-              return res.sendStatus(403);
-          }
-
-          next();
-      });
-  } else {
-      res.sendStatus(401);
   }
 }
