@@ -3,14 +3,14 @@ import jwt from 'jsonwebtoken'
 import config from '../config/config'
 import db from '../models'
 
-function generateJwtAccessToken(user: object) {
+function generateJwtAccessToken(user: any) {
 	const ONE_WEEK = 60 * 60 * 24 * 7
 	return jwt.sign(user, config?.jwtAccessSecret, {
 		expiresIn: ONE_WEEK
 	})
 } 	
 
-function generateJwtRefreshToken(user: object) {
+function generateJwtRefreshToken(user: any) {
 	const ONE_WEEK = 60 * 60 * 24 * 7
 	return jwt.sign(user, config?.jwtRefreshSecret, {
 		expiresIn: ONE_WEEK
@@ -42,34 +42,34 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 
 export const login = async (req: Request, res: Response,): Promise<Response> => {
 	try {
-		const {email, password} = req.body
-		const user = await db.User.findOne({
-			where: {
-				email: email
-			}
-		})
-		if(!user) {
-			return res.status(403).send({
-				error: 'The login information was incorrect'
-			})
-		}
+    const user: any = req.user;
+		const userJson = user?.dataValues;
 
-		const isPasswordValid = await user.comparePassword(password)
-		if(!isPasswordValid) {
-			return res.status(403).send({
-				error: 'The login information was incorrect'
-			})
-		}
-
-		const userJson = user.toJSON();
 		return res.send({
-			user: userJson,
-			tokens: {
-				accessToken: generateJwtAccessToken(userJson),
-				refreshToken: generateJwtRefreshToken(userJson)
-			}
+			user: user?.dataValues,
+      token: generateJwtAccessToken(userJson),
+      refreshToken: generateJwtRefreshToken(userJson),
 		})
 	} catch(error) {
+    console.error('error :>> ', error);
+		return res.status(500).send({
+			error: 'An error has occured while trying to log in'
+		});
+	}
+}
+
+export const getUser = async (req: Request, res: Response,): Promise<Response> => {
+	try {
+    const user: any = req.user;
+		const userJson = user?.dataValues;
+
+		return res.send({
+			user: user?.dataValues,
+      token: generateJwtAccessToken(userJson),
+      refreshToken: generateJwtRefreshToken(userJson),
+		})
+	} catch(error) {
+    console.error('error :>> ', error);
 		return res.status(500).send({
 			error: 'An error has occured while trying to log in'
 		});
