@@ -22,3 +22,10 @@ roles
 - admin
 - creator
 - viewer
+
+
+TODOs:
+
+
+Refactoring:
+- Use constants
