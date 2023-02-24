@@ -30,7 +30,7 @@ passport.use(new LocalStrategy(localStrategyOpts, async (email, password, done) 
       return done(null, false, { message: 'Incorrect email or password.' });
     }
 
-    return done(null, user);
+    return done(null, user.dataValues);
   } catch (err) {
     return done(err);
   }
@@ -43,7 +43,7 @@ passport.use(new JWTstrategy(jwtStrategyOpts, async (jwt_payload, done) => {
       return done(null, false);
     }
 
-    return done(null, user);
+    return done(null, user.dataValues);
   } catch (err) {
     return done(err);
   }

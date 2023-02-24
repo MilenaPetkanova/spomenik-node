@@ -3,5 +3,7 @@ export interface ImageInterface {
     caption: string;
     year: number;
     location: string;
+    userId: number;
+    spomenikId: number;
 }
   
