@@ -42,13 +42,10 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 
 export const login = async (req: Request, res: Response,): Promise<Response> => {
 	try {
-    const user: any = req.user;
-		const userJson = user?.dataValues;
-
 		return res.send({
-			user: user?.dataValues,
-      token: generateJwtAccessToken(userJson),
-      refreshToken: generateJwtRefreshToken(userJson),
+			user: req.user,
+      token: generateJwtAccessToken(req.user),
+      refreshToken: generateJwtRefreshToken(req.user),
 		})
 	} catch(error) {
     console.error('error :>> ', error);
@@ -60,18 +57,15 @@ export const login = async (req: Request, res: Response,): Promise<Response> => 
 
 export const getUser = async (req: Request, res: Response,): Promise<Response> => {
 	try {
-    const user: any = req.user;
-		const userJson = user?.dataValues;
-
 		return res.send({
-			user: user?.dataValues,
-      token: generateJwtAccessToken(userJson),
-      refreshToken: generateJwtRefreshToken(userJson),
+			user: req.user,
+      token: generateJwtAccessToken(req.user),
+      refreshToken: generateJwtRefreshToken(req.user),
 		})
 	} catch(error) {
     console.error('error :>> ', error);
 		return res.status(500).send({
-			error: 'An error has occured while trying to log in'
+			error: 'An error has occured while trying to get user'
 		});
 	}
 }

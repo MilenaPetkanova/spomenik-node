@@ -2,33 +2,31 @@ import {Router} from 'express'
 import passport from 'passport';
 
 import {validateUser} from '../middlewares/auth'
-import {register, login, getUser} from '../controllers/auth'
-import {getSpomeniks, getSpomenikById, createSpomenik, updateSpomenik, deleteSpomenik} from '../controllers/spomenik'
-import {getLetters, getLetterById, createLetter, updateLetter, deleteLetter} from '../controllers/letters'
-import {createImage, getImages, getImageById, updateImage, deleteImage} from '../controllers/images'
+import {Routes} from '../constants/routes.constants'
+import * as authController from '../controllers/auth.controller'
+import * as spomenikController from '../controllers/spomenik.controller'
+import * as lettersController from '../controllers/letter.controller'
+import * as imageController from '../controllers/image.controller'
 
 const router = Router()
 
-router.post('/register', validateUser, register)
-router.post('/login', passport.authenticate('local'), login);
-router.get('/user', passport.authenticate('jwt'), getUser);
+router.post(Routes.REGISTER, validateUser, authController.register)
+router.post(Routes.LOGIN, passport.authenticate('local'), authController.login);
+router.get(Routes.USER, passport.authenticate('jwt'), authController.getUser);
 
-router.post('/spomeniks', passport.authenticate('jwt'), createSpomenik)
-router.get('/spomeniks', passport.authenticate('jwt'), getSpomeniks)
-router.get('/spomeniks/:id', passport.authenticate('jwt'), getSpomenikById)
-router.put('/spomeniks/:id', passport.authenticate('jwt'), updateSpomenik)
-router.delete('/spomeniks/:id', passport.authenticate('jwt'), deleteSpomenik)
+router.get(Routes.SPOMENIKS, passport.authenticate('jwt'), spomenikController.getAll)
+router.post(Routes.SPOMENIKS, passport.authenticate('jwt'), spomenikController.create)
+router.put(`${Routes.SPOMENIKS}/:id`, passport.authenticate('jwt'), spomenikController.update)
+router.delete(`${Routes.SPOMENIKS}/:id`, passport.authenticate('jwt'), spomenikController.destroy)
 
-router.post('/letters', passport.authenticate('jwt'), createLetter)
-router.get('/letters', passport.authenticate('jwt'), getLetters)
-router.get('/letters/:id', passport.authenticate('jwt'), getLetterById)
-router.put('/letters/:id', passport.authenticate('jwt'), updateLetter)
-router.delete('/letters/:id', passport.authenticate('jwt'), deleteLetter)
+router.get(Routes.LETTERS, passport.authenticate('jwt'), lettersController.getAll)
+router.post(Routes.LETTERS, passport.authenticate('jwt'), lettersController.create)
+router.put(`${Routes.LETTERS}/:id`, passport.authenticate('jwt'), lettersController.update)
+router.delete(`${Routes.LETTERS}/:id`, passport.authenticate('jwt'), lettersController.destroy)
 
-router.post('/images', passport.authenticate('jwt'), createImage)
-router.get('/images', passport.authenticate('jwt'), getImages)
-router.get('/images/:id', passport.authenticate('jwt'), getImageById)
-router.put('/images/:id', passport.authenticate('jwt'), updateImage)
-router.delete('/images/:id', passport.authenticate('jwt'), deleteImage)
+router.get(Routes.IMAGES, passport.authenticate('jwt'), imageController.getAll)
+router.post(Routes.IMAGES, passport.authenticate('jwt'), imageController.create)
+router.put(`${Routes.IMAGES}/:id`, passport.authenticate('jwt'), imageController.update)
+router.delete(`${Routes.IMAGES}/:id`, passport.authenticate('jwt'), imageController.destroy)
 
 export default router

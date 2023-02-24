@@ -25,7 +25,11 @@ roles
 
 
 TODOs:
-
+- type all
+- add logger
+- integrate sentry
+- get user from req and do not send it from FE each time  
 
 Refactoring:
-- Use constants
+- use constants
+- rename spomenik to book or smth else

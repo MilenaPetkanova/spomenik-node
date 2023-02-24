@@ -8,9 +8,19 @@ module.exports = (sequelize: any, DataTypes: any) => {
     isPrivate!: boolean;
   }
   UserSpomenik.init({
-    userId: DataTypes.INTEGER,
-    spomenikId: DataTypes.INTEGER,
-    isPrivate: DataTypes.BOOLEAN
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    spomenikId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    isPrivate: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    }
   }, {
     sequelize,
     modelName: 'UserSpomenik',

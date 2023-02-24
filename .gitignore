@@ -354,3 +354,7 @@ MigrationBackup/
 
 # Ignore .env files
 *.env
+
+# Ignore lock files
+yarn.lock
+package=lock.json

@@ -7,6 +7,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     caption!: string;
     year!: number;
     location!: string;
+    userId!: number;
+    spomenikId!: number;
   }
   Image.init({
     src: {
@@ -24,6 +26,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
     location: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    spomenikId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   }, {
     sequelize,
