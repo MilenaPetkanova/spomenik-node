@@ -2,6 +2,7 @@ import db from '../models'
 
 export const getAll = async (userId: number, spomenikId: number): Promise<any> => {
   const entities = await db.Image.findAll({
+    raw : true,
     where: [
       {userId: userId},
       {spomenikId: spomenikId}

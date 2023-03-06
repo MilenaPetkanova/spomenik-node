@@ -1,7 +1,13 @@
 import db from '../models'
 
-export const getAll = async (): Promise<any> => {
-  const entities = await db.UserSpomenik.findAll();
+export const getAll = async (userId: number): Promise<any> => {
+  const entities = await db.UserSpomenik.findAll({
+    raw : true,
+    where: { userId: userId },
+    order: [
+      ['id', 'DESC']
+    ],
+  });  
   return entities
 }
 
