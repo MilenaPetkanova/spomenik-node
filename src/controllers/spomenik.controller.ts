@@ -10,8 +10,10 @@ const controllerName = 'Spomenik'
 
 export const getAll = async (req: Request, res: Response): Promise<Response> => {
 	try {
-    const enteties = await spomenikData.getAll()
-		return res.status(StatusCodes.OK).json(enteties);
+    const userSpomeniksRelations = await userSpomenikData.getAll(getReqUserId(req.user))
+    const userSpomeniksIds = userSpomeniksRelations.map((relationalEntity: any) => relationalEntity.spomenikId);
+    const userSpomeniks = await spomenikData.getByIds(userSpomeniksIds)
+		return res.status(StatusCodes.OK).json(userSpomeniks);
 	} catch(error) {
 		console.error(error);
 		return res.status(StatusCodes.INTERNAl_SERVER).json(Logs.Errors.INTERNAL_SERVER);
