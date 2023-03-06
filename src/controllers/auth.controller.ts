@@ -1,19 +1,20 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../config/config'
 import db from '../models'
+import { StatusCodes } from '../constants/status-codes.constants'
+import { Logs } from '../constants/logs.constants'
+import { Jwt } from '../constants/common.constants'
 
 function generateJwtAccessToken(user: any) {
-	const ONE_WEEK = 60 * 60 * 24 * 7
 	return jwt.sign(user, config?.jwtAccessSecret, {
-		expiresIn: ONE_WEEK
+		expiresIn: Jwt.EXPIRATON_TME
 	})
 } 	
 
 function generateJwtRefreshToken(user: any) {
-	const ONE_WEEK = 60 * 60 * 24 * 7
 	return jwt.sign(user, config?.jwtRefreshSecret, {
-		expiresIn: ONE_WEEK
+		expiresIn: Jwt.EXPIRATON_TME
 	})
 } 
 
@@ -57,16 +58,14 @@ export const login = async (req: Request, res: Response,): Promise<Response> => 
 
 export const getUser = async (req: Request, res: Response,): Promise<Response> => {
 	try {
-		return res.send({
-			user: req.user,
+    return res.status(StatusCodes.OK).send({
+			data: req.user,
       token: generateJwtAccessToken(req.user),
       refreshToken: generateJwtRefreshToken(req.user),
 		})
 	} catch(error) {
     console.error('error :>> ', error);
-		return res.status(500).send({
-			error: 'An error has occured while trying to get user'
-		});
+		return res.status(StatusCodes.INTERNAl_SERVER).json(Logs.Errors.INTERNAL_SERVER);
 	}
 }
 

@@ -1,7 +1,3 @@
-export const BCRYPT_SALT_ROUNDS = 12;
-
-export const jwtConstants = {
-  tokenExpirationStr: '15m',
-  tokenExpirationInMinutes: 15,
-  randtokenSize: 256
+export const Jwt = {
+  EXPIRATON_TME: 60 * 60 * 24 * 7 // one week 
 }
